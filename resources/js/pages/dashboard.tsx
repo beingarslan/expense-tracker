@@ -50,6 +50,7 @@ interface DashboardData {
         id: number;
         title: string;
         amount: number;
+        currency: string;
         type: string;
         date: string;
         priority: string;
@@ -62,6 +63,7 @@ interface DashboardData {
         id: number;
         title: string;
         amount: number;
+        currency: string;
         next_payment_date: string;
         frequency: string;
         category?: {
@@ -73,6 +75,7 @@ interface DashboardData {
         id: number;
         title: string;
         amount: number;
+        currency: string;
         date: string;
         category?: {
             name: string;
@@ -250,7 +253,7 @@ export default function Dashboard({
                                             {expense.type === 'income'
                                                 ? '+'
                                                 : '-'}
-                                            {formatCurrency(expense.amount)}
+                                            {formatCurrency(expense.amount, expense.currency)}
                                         </span>
                                     </div>
                                 ))
@@ -284,7 +287,7 @@ export default function Dashboard({
                                             </p>
                                         </div>
                                         <span className="font-semibold text-orange-600 dark:text-orange-400">
-                                            {formatCurrency(payment.amount)}
+                                            {formatCurrency(payment.amount, payment.currency)}
                                         </span>
                                     </div>
                                 ))}
@@ -315,7 +318,7 @@ export default function Dashboard({
                                             </p>
                                         </div>
                                         <span className="font-semibold text-red-600 dark:text-red-400">
-                                            {formatCurrency(expense.amount)}
+                                            {formatCurrency(expense.amount, expense.currency)}
                                         </span>
                                     </div>
                                 ))}

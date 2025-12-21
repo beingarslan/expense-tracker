@@ -36,11 +36,13 @@ export function formatCurrency(amount: number, currency: string = 'USD'): string
 
     const symbol = currencySymbols[currency] || currency;
     
-    return new Intl.NumberFormat('en-US', {
+    const formatted = new Intl.NumberFormat('en-US', {
         style: 'decimal',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    }).format(amount).replace(/^/, symbol);
+    }).format(amount);
+    
+    return symbol + formatted;
 }
 
 /**
