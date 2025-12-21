@@ -1,7 +1,21 @@
 import AppLayout from '@/layouts/app-layout';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    Cell,
+    Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from 'recharts';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -80,13 +94,6 @@ export default function Dashboard({
     highPriorityExpenses,
     monthlyTrend,
 }: DashboardData) {
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(amount);
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -230,7 +237,7 @@ export default function Dashboard({
                                             <p className="text-xs text-neutral-600 dark:text-neutral-400">
                                                 {expense.category?.name ||
                                                     'No category'}{' '}
-                                                • {expense.date}
+                                                • {formatDate(expense.date)}
                                             </p>
                                         </div>
                                         <span
@@ -273,7 +280,7 @@ export default function Dashboard({
                                             </p>
                                             <p className="text-xs text-neutral-600 dark:text-neutral-400">
                                                 {payment.frequency} •{' '}
-                                                {payment.next_payment_date}
+                                                {formatDate(payment.next_payment_date)}
                                             </p>
                                         </div>
                                         <span className="font-semibold text-orange-600 dark:text-orange-400">
@@ -304,7 +311,7 @@ export default function Dashboard({
                                             <p className="text-xs text-neutral-600 dark:text-neutral-400">
                                                 {expense.category?.name ||
                                                     'No category'}{' '}
-                                                • {expense.date}
+                                                • {formatDate(expense.date)}
                                             </p>
                                         </div>
                                         <span className="font-semibold text-red-600 dark:text-red-400">
@@ -313,6 +320,122 @@ export default function Dashboard({
                                     </div>
                                 ))}
                             </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Charts Section */}
+                <div className="grid gap-4 md:grid-cols-2">
+                    {/* Monthly Trend Chart */}
+                    <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-neutral-900">
+                        <h3 className="mb-4 text-lg font-semibold">
+                            Income vs Expenses Trend
+                        </h3>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart data={monthlyTrend}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis 
+                                    dataKey="month" 
+                                    tick={{ fontSize: 12 }}
+                                />
+                                <YAxis tick={{ fontSize: 12 }} />
+                                <Tooltip 
+                                    formatter={(value: number) => formatCurrency(value)}
+                                />
+                                <Legend />
+                                <Bar 
+                                    dataKey="income" 
+                                    fill="#22c55e" 
+                                    name="Income"
+                                    radius={[8, 8, 0, 0]}
+                                />
+                                <Bar 
+                                    dataKey="expense" 
+                                    fill="#ef4444" 
+                                    name="Expenses"
+                                    radius={[8, 8, 0, 0]}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    {/* Expenses by Category Pie Chart */}
+                    {expensesByCategory.length > 0 && (
+                        <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-neutral-900">
+                            <h3 className="mb-4 text-lg font-semibold">
+                                Expenses Distribution
+                            </h3>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={expensesByCategory.map((item) => ({
+                                            name: item.category.name,
+                                            value: parseFloat(item.total.toString()),
+                                        }))}
+                                        cx="50%"
+                                        cy="50%"
+                                        labelLine={false}
+                                        label={({
+                                            cx,
+                                            cy,
+                                            midAngle,
+                                            innerRadius,
+                                            outerRadius,
+                                            percent,
+                                        }) => {
+                                            const radius =
+                                                innerRadius +
+                                                (outerRadius - innerRadius) *
+                                                    0.5;
+                                            const x =
+                                                cx +
+                                                radius *
+                                                    Math.cos(
+                                                        (-midAngle * Math.PI) /
+                                                            180,
+                                                    );
+                                            const y =
+                                                cy +
+                                                radius *
+                                                    Math.sin(
+                                                        (-midAngle * Math.PI) /
+                                                            180,
+                                                    );
+
+                                            return (
+                                                <text
+                                                    x={x}
+                                                    y={y}
+                                                    fill="white"
+                                                    textAnchor={
+                                                        x > cx
+                                                            ? 'start'
+                                                            : 'end'
+                                                    }
+                                                    dominantBaseline="central"
+                                                    fontSize={12}
+                                                    fontWeight="bold"
+                                                >
+                                                    {`${(percent * 100).toFixed(0)}%`}
+                                                </text>
+                                            );
+                                        }}
+                                        outerRadius={100}
+                                        dataKey="value"
+                                    >
+                                        {expensesByCategory.map((entry) => (
+                                            <Cell
+                                                key={`cell-${entry.category_id}`}
+                                                fill={entry.category.color}
+                                            />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip 
+                                        formatter={(value: number) => formatCurrency(value)}
+                                    />
+                                    <Legend />
+                                </PieChart>
+                            </ResponsiveContainer>
                         </div>
                     )}
                 </div>

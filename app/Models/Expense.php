@@ -15,6 +15,7 @@ class Expense extends Model
         'category_id',
         'title',
         'amount',
+        'currency',
         'type',
         'date',
         'notes',
