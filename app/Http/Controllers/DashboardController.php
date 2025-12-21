@@ -77,8 +77,14 @@ class DashboardController extends Controller
         // Get monthly trend (last 6 months) - optimized with single query
         $sixMonthsAgo = Carbon::now()->subMonths(5)->startOfMonth();
         
+        // Use database-agnostic date formatting
+        $driver = DB::connection()->getDriverName();
+        $dateFormat = $driver === 'sqlite' 
+            ? "strftime('%Y-%m', date) as month_key"
+            : "DATE_FORMAT(date, '%Y-%m') as month_key";
+        
         $monthlyData = Expense::selectRaw("
-                DATE_FORMAT(date, '%Y-%m') as month_key,
+                {$dateFormat},
                 type,
                 SUM(amount) as total
             ")
