@@ -26,6 +26,7 @@ interface RecurringPayment {
     id: number;
     title: string;
     amount: number;
+    currency: string;
     frequency: string;
     next_payment_date: string;
     start_date: string;
@@ -51,6 +52,7 @@ export default function RecurringPaymentsIndex({
     const { data, setData, post, put, reset, processing, errors } = useForm({
         title: '',
         amount: '',
+        currency: 'USD',
         category_id: '',
         frequency: 'monthly',
         start_date: new Date().toISOString().split('T')[0],
@@ -85,6 +87,7 @@ export default function RecurringPaymentsIndex({
         setData({
             title: payment.title,
             amount: payment.amount.toString(),
+            currency: payment.currency || 'USD',
             category_id: payment.category?.id.toString() || '',
             frequency: payment.frequency,
             start_date: payment.start_date,
@@ -340,6 +343,35 @@ export default function RecurringPaymentsIndex({
                                 {errors.amount && (
                                     <p className="mt-1 text-sm text-red-600">
                                         {errors.amount}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="mb-2 block text-sm font-medium">
+                                    Currency *
+                                </label>
+                                <select
+                                    value={data.currency}
+                                    onChange={(e) =>
+                                        setData('currency', e.target.value)
+                                    }
+                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                >
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                    <option value="INR">INR (₹)</option>
+                                    <option value="CAD">CAD (C$)</option>
+                                    <option value="AUD">AUD (A$)</option>
+                                    <option value="CNY">CNY (¥)</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="SEK">SEK (kr)</option>
+                                </select>
+                                {errors.currency && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.currency}
                                     </p>
                                 )}
                             </div>

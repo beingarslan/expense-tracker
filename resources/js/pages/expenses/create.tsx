@@ -33,6 +33,7 @@ export default function CreateExpense({ categories }: CreateExpenseProps) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         amount: '',
+        currency: 'USD',
         type: 'expense',
         category_id: '',
         date: new Date().toISOString().split('T')[0],
@@ -104,6 +105,41 @@ export default function CreateExpense({ categories }: CreateExpenseProps) {
                                 )}
                             </div>
 
+                            <div>
+                                <label
+                                    htmlFor="currency"
+                                    className="mb-2 block text-sm font-medium"
+                                >
+                                    Currency *
+                                </label>
+                                <select
+                                    id="currency"
+                                    value={data.currency}
+                                    onChange={(e) =>
+                                        setData('currency', e.target.value)
+                                    }
+                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                >
+                                    <option value="USD">USD ($)</option>
+                                    <option value="EUR">EUR (€)</option>
+                                    <option value="GBP">GBP (£)</option>
+                                    <option value="JPY">JPY (¥)</option>
+                                    <option value="INR">INR (₹)</option>
+                                    <option value="CAD">CAD (C$)</option>
+                                    <option value="AUD">AUD (A$)</option>
+                                    <option value="CNY">CNY (¥)</option>
+                                    <option value="CHF">CHF</option>
+                                    <option value="SEK">SEK (kr)</option>
+                                </select>
+                                {errors.currency && (
+                                    <p className="mt-1 text-sm text-red-600">
+                                        {errors.currency}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="grid gap-4 md:grid-cols-2">
                             <div>
                                 <label
                                     htmlFor="date"
