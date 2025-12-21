@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, Link } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -259,12 +259,12 @@ export default function EditExpense({ expense, categories }: EditExpenseProps) {
                             >
                                 {processing ? 'Saving...' : 'Update Expense'}
                             </button>
-                            <a
+                            <Link
                                 href="/expenses"
                                 className="rounded-lg border border-neutral-300 px-6 py-2 hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
                             >
                                 Cancel
-                            </a>
+                            </Link>
                         </div>
                     </form>
                 </div>
