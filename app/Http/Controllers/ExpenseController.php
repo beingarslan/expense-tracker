@@ -49,7 +49,16 @@ class ExpenseController extends Controller
             });
         }
 
-        $expenses = $query->paginate(20);
+        $expenses = $query->paginate(20)->withQueryString();
+        
+        // If the requested page is out of range, redirect to the last available page
+        if ($expenses->currentPage() > $expenses->lastPage() && $expenses->lastPage() > 0) {
+            return redirect()->route('expenses.index', array_merge(
+                $request->only(['category_id', 'type', 'priority', 'start_date', 'end_date', 'search']),
+                ['page' => $expenses->lastPage()]
+            ));
+        }
+        
         $categories = Category::where('user_id', auth()->id())->get();
 
         return Inertia::render('expenses/index', [
@@ -80,7 +89,15 @@ class ExpenseController extends Controller
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'type' => 'required|in:income,expense',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) {
+                    if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
             'date' => 'required|date',
             'notes' => 'nullable|string',
             'priority' => 'required|in:low,medium,high',
@@ -140,7 +157,15 @@ class ExpenseController extends Controller
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'type' => 'required|in:income,expense',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) {
+                    if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
             'date' => 'required|date',
             'notes' => 'nullable|string',
             'priority' => 'required|in:low,medium,high',

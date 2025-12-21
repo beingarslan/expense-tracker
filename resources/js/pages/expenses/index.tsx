@@ -74,6 +74,7 @@ export default function ExpensesIndex({
                 category_id: categoryFilter,
                 type: typeFilter,
                 priority: priorityFilter,
+                page: 1, // Reset to page 1 when applying filters
             },
             { preserveState: true },
         );
@@ -319,6 +320,7 @@ export default function ExpensesIndex({
                                                     <Link
                                                         href={`/expenses/${expense.id}/edit`}
                                                         className="rounded p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                                        aria-label={`Edit ${expense.title}`}
                                                     >
                                                         <Edit size={18} />
                                                     </Link>
@@ -329,6 +331,7 @@ export default function ExpensesIndex({
                                                             )
                                                         }
                                                         className="rounded p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                                        aria-label={`Delete ${expense.title}`}
                                                     >
                                                         <Trash2 size={18} />
                                                     </button>
@@ -365,7 +368,14 @@ export default function ExpensesIndex({
                                 ).map((page) => (
                                     <Link
                                         key={page}
-                                        href={`/expenses?page=${page}`}
+                                        href="/expenses"
+                                        data={{
+                                            page,
+                                            search,
+                                            category_id: categoryFilter,
+                                            type: typeFilter,
+                                            priority: priorityFilter,
+                                        }}
                                         className={`rounded px-3 py-1 ${
                                             page === expenses.current_page
                                                 ? 'bg-blue-600 text-white'

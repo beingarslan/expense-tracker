@@ -67,6 +67,8 @@ A comprehensive personal expense manager built with Laravel and React to help fr
    touch database/database.sqlite
    php artisan migrate
    php artisan db:seed --class=CategorySeeder
+   # Optional: Add test data including expenses and EMI payments
+   php artisan db:seed --class=ExpenseSeeder
    ```
 
 5. **Build frontend assets**
@@ -125,9 +127,9 @@ Use the filter options on the Expenses page:
 
 ## Technology Stack
 
-- **Backend**: Laravel 12
-- **Frontend**: React 19 with TypeScript
-- **UI Framework**: Tailwind CSS 4
+- **Backend**: Laravel 11
+- **Frontend**: React 18 with TypeScript
+- **UI Framework**: Tailwind CSS
 - **SPA**: Inertia.js
 - **Authentication**: Laravel Fortify
 - **Database**: SQLite (easily switchable to MySQL/PostgreSQL)

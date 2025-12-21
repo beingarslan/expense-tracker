@@ -35,11 +35,19 @@ class RecurringPaymentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
             'frequency' => 'required|in:daily,weekly,monthly,yearly',
             'start_date' => 'required|date',
             'next_payment_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'notes' => 'nullable|string',
             'status' => 'required|in:active,paused,completed',
         ]);
@@ -63,11 +71,19 @@ class RecurringPaymentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
             'frequency' => 'required|in:daily,weekly,monthly,yearly',
             'start_date' => 'required|date',
             'next_payment_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
             'notes' => 'nullable|string',
             'status' => 'required|in:active,paused,completed',
         ]);

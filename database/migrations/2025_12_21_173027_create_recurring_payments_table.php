@@ -24,6 +24,10 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->enum('status', ['active', 'paused', 'completed'])->default('active');
             $table->timestamps();
+
+            // Index to optimize upcoming payments query
+            $table->index(['user_id', 'next_payment_date']);
+            $table->index(['user_id', 'status']);
         });
     }
 

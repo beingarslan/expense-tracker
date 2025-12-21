@@ -23,6 +23,12 @@ return new class extends Migration
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->boolean('is_recurring')->default(false);
             $table->timestamps();
+
+            // Indexes to optimize common queries
+            $table->index(['user_id', 'date']);
+            $table->index(['user_id', 'type']);
+            $table->index(['user_id', 'priority']);
+            $table->index(['user_id', 'category_id']);
         });
     }
 

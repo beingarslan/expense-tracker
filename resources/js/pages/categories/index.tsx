@@ -147,6 +147,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                                 handleEdit(category)
                                             }
                                             className="rounded p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                            aria-label={`Edit ${category.name} category`}
                                         >
                                             <Edit size={16} />
                                         </button>
@@ -155,6 +156,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                                 handleDelete(category.id)
                                             }
                                             className="rounded p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                            aria-label={`Delete ${category.name} category`}
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -205,6 +207,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                                 handleEdit(category)
                                             }
                                             className="rounded p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                            aria-label={`Edit ${category.name} category`}
                                         >
                                             <Edit size={16} />
                                         </button>
@@ -213,6 +216,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                                 handleDelete(category.id)
                                             }
                                             className="rounded p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                            aria-label={`Delete ${category.name} category`}
                                         >
                                             <Trash2 size={16} />
                                         </button>
@@ -226,9 +230,14 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="category-modal-title"
+                >
                     <div className="max-h-screen w-full max-w-md overflow-y-auto rounded-xl bg-white p-6 dark:bg-neutral-900">
-                        <h2 className="mb-4 text-xl font-bold">
+                        <h2 id="category-modal-title" className="mb-4 text-xl font-bold">
                             {editingCategory
                                 ? 'Edit Category'
                                 : 'Add Category'}

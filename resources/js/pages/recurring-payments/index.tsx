@@ -208,6 +208,7 @@ export default function RecurringPaymentsIndex({
                                                     handleEdit(payment)
                                                 }
                                                 className="rounded p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                                aria-label={`Edit ${payment.title} payment`}
                                             >
                                                 <Edit size={18} />
                                             </button>
@@ -216,6 +217,7 @@ export default function RecurringPaymentsIndex({
                                                     handleDelete(payment.id)
                                                 }
                                                 className="rounded p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                                aria-label={`Delete ${payment.title} payment`}
                                             >
                                                 <Trash2 size={18} />
                                             </button>
@@ -270,6 +272,7 @@ export default function RecurringPaymentsIndex({
                                                     handleEdit(payment)
                                                 }
                                                 className="rounded p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                                                aria-label={`Edit ${payment.title} payment`}
                                             >
                                                 <Edit size={18} />
                                             </button>
@@ -278,6 +281,7 @@ export default function RecurringPaymentsIndex({
                                                     handleDelete(payment.id)
                                                 }
                                                 className="rounded p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                                                aria-label={`Delete ${payment.title} payment`}
                                             >
                                                 <Trash2 size={18} />
                                             </button>
@@ -292,9 +296,14 @@ export default function RecurringPaymentsIndex({
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="payment-modal-title"
+                >
                     <div className="max-h-screen w-full max-w-md overflow-y-auto rounded-xl bg-white p-6 dark:bg-neutral-900">
-                        <h2 className="mb-4 text-xl font-bold">
+                        <h2 id="payment-modal-title" className="mb-4 text-xl font-bold">
                             {editingPayment
                                 ? 'Edit Recurring Payment'
                                 : 'Add Recurring Payment'}

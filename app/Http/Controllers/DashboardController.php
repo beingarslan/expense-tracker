@@ -74,26 +74,33 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        // Get monthly trend (last 6 months)
+        // Get monthly trend (last 6 months) - optimized with single query
+        $sixMonthsAgo = Carbon::now()->subMonths(5)->startOfMonth();
+        
+        $monthlyData = Expense::selectRaw("
+                DATE_FORMAT(date, '%Y-%m') as month_key,
+                type,
+                SUM(amount) as total
+            ")
+            ->where('user_id', $userId)
+            ->where('date', '>=', $sixMonthsAgo)
+            ->groupBy('month_key', 'type')
+            ->get()
+            ->groupBy('month_key');
+
         $monthlyTrend = [];
         for ($i = 5; $i >= 0; $i--) {
             $month = Carbon::now()->subMonths($i)->startOfMonth();
-            $monthEnd = Carbon::now()->subMonths($i)->endOfMonth();
-
-            $income = Expense::where('user_id', $userId)
-                ->where('type', 'income')
-                ->whereBetween('date', [$month, $monthEnd])
-                ->sum('amount');
-
-            $expense = Expense::where('user_id', $userId)
-                ->where('type', 'expense')
-                ->whereBetween('date', [$month, $monthEnd])
-                ->sum('amount');
+            $monthKey = $month->format('Y-m');
+            
+            $monthData = $monthlyData->get($monthKey, collect());
+            $income = $monthData->where('type', 'income')->sum('total');
+            $expense = $monthData->where('type', 'expense')->sum('total');
 
             $monthlyTrend[] = [
                 'month' => $month->format('M Y'),
-                'income' => $income,
-                'expense' => $expense,
+                'income' => (float) $income,
+                'expense' => (float) $expense,
             ];
         }
 
