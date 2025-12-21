@@ -35,6 +35,7 @@ class RecurringPaymentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
+            'currency' => 'nullable|string|size:3',
             'category_id' => [
                 'nullable',
                 'exists:categories,id',
@@ -53,6 +54,9 @@ class RecurringPaymentController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
+        if (!isset($validated['currency'])) {
+            $validated['currency'] = 'USD';
+        }
 
         RecurringPayment::create($validated);
 
@@ -71,6 +75,7 @@ class RecurringPaymentController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
+            'currency' => 'nullable|string|size:3',
             'category_id' => [
                 'nullable',
                 'exists:categories,id',
@@ -87,6 +92,10 @@ class RecurringPaymentController extends Controller
             'notes' => 'nullable|string',
             'status' => 'required|in:active,paused,completed',
         ]);
+
+        if (!isset($validated['currency'])) {
+            $validated['currency'] = $recurringPayment->currency ?? 'USD';
+        }
 
         $recurringPayment->update($validated);
 

@@ -88,6 +88,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
+            'currency' => 'nullable|string|size:3',
             'type' => 'required|in:income,expense',
             'category_id' => [
                 'nullable',
@@ -105,6 +106,9 @@ class ExpenseController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
+        if (!isset($validated['currency'])) {
+            $validated['currency'] = 'USD';
+        }
 
         Expense::create($validated);
 
@@ -156,6 +160,7 @@ class ExpenseController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
+            'currency' => 'nullable|string|size:3',
             'type' => 'required|in:income,expense',
             'category_id' => [
                 'nullable',
@@ -171,6 +176,10 @@ class ExpenseController extends Controller
             'priority' => 'required|in:low,medium,high',
             'is_recurring' => 'boolean',
         ]);
+
+        if (!isset($validated['currency'])) {
+            $validated['currency'] = $expense->currency ?? 'USD';
+        }
 
         $expense->update($validated);
 

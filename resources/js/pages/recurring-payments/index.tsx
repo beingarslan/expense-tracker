@@ -1,4 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, router } from '@inertiajs/react';
 import { PlusCircle, Edit, Trash2, Clock } from 'lucide-react';
@@ -109,13 +110,6 @@ export default function RecurringPaymentsIndex({
         reset();
     };
 
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(amount);
-    };
-
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'active':
@@ -193,7 +187,7 @@ export default function RecurringPaymentsIndex({
                                                 </span>
                                                 <span>
                                                     Next:{' '}
-                                                    {payment.next_payment_date}
+                                                    {formatDate(payment.next_payment_date)}
                                                 </span>
                                             </div>
                                         </div>

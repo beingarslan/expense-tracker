@@ -1,4 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
+import { formatCurrency, formatDate } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { PlusCircle, Search, Trash2, Edit } from 'lucide-react';
@@ -84,13 +85,6 @@ export default function ExpensesIndex({
         if (confirm('Are you sure you want to delete this expense?')) {
             router.delete(`/expenses/${id}`);
         }
-    };
-
-    const formatCurrency = (amount: number) => {
-        return new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(amount);
     };
 
     const getPriorityColor = (priority: string) => {
@@ -313,7 +307,7 @@ export default function ExpensesIndex({
                                                 </span>
                                             </td>
                                             <td className="p-4 text-sm">
-                                                {expense.date}
+                                                {formatDate(expense.date)}
                                             </td>
                                             <td className="p-4 text-right">
                                                 <div className="flex justify-end gap-2">

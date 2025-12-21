@@ -15,6 +15,7 @@ class RecurringPayment extends Model
         'category_id',
         'title',
         'amount',
+        'currency',
         'frequency',
         'start_date',
         'next_payment_date',
