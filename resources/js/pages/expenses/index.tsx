@@ -27,6 +27,7 @@ interface Expense {
     id: number;
     title: string;
     amount: number;
+    currency: string;
     type: string;
     date: string;
     priority: string;
@@ -291,6 +292,7 @@ export default function ExpensesIndex({
                                                         : '-'}
                                                     {formatCurrency(
                                                         expense.amount,
+                                                        expense.currency,
                                                     )}
                                                 </span>
                                             </td>

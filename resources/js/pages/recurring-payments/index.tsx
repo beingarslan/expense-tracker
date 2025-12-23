@@ -197,7 +197,7 @@ export default function RecurringPaymentsIndex({
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="text-lg font-semibold text-orange-600 dark:text-orange-400">
-                                            {formatCurrency(payment.amount)}
+                                            {formatCurrency(payment.amount, payment.currency)}
                                         </span>
                                         <div className="flex gap-2">
                                             <button
@@ -261,7 +261,7 @@ export default function RecurringPaymentsIndex({
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-semibold">
-                                            {formatCurrency(payment.amount)}
+                                            {formatCurrency(payment.amount, payment.currency)}
                                         </span>
                                         <div className="flex gap-2">
                                             <button
