@@ -293,7 +293,7 @@ export default function RecurringPaymentsIndex({
 
             {/* Modal */}
             {showModal && (
-                <div 
+                <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
                     role="dialog"
                     aria-modal="true"
@@ -368,6 +368,7 @@ export default function RecurringPaymentsIndex({
                                     <option value="CNY">CNY (¥)</option>
                                     <option value="CHF">CHF</option>
                                     <option value="SEK">SEK (kr)</option>
+                                    <option value="PKR">PKR (₨)</option>
                                 </select>
                                 {errors.currency && (
                                     <p className="mt-1 text-sm text-red-600">

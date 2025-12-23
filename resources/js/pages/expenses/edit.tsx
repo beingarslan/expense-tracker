@@ -144,6 +144,7 @@ export default function EditExpense({ expense, categories }: EditExpenseProps) {
                                     <option value="CNY">CNY (¥)</option>
                                     <option value="CHF">CHF</option>
                                     <option value="SEK">SEK (kr)</option>
+                                    <option value="PKR">PKR (₨)</option>
                                 </select>
                                 {errors.currency && (
                                     <p className="mt-1 text-sm text-red-600">
