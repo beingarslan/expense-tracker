@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Expense;
+use App\Models\FinancialGoal;
 use App\Models\RecurringPayment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -74,6 +75,24 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
+        // Get active financial goals
+        $activeGoals = FinancialGoal::where('user_id', $userId)
+            ->where('status', 'active')
+            ->orderBy('target_date', 'asc')
+            ->limit(5)
+            ->get()
+            ->map(function ($goal) {
+                return [
+                    'id' => $goal->id,
+                    'title' => $goal->title,
+                    'target_amount' => $goal->target_amount,
+                    'current_amount' => $goal->current_amount,
+                    'target_date' => $goal->target_date,
+                    'progress_percentage' => $goal->progress_percentage,
+                    'remaining_amount' => $goal->remaining_amount,
+                ];
+            });
+
         // Get monthly trend (last 6 months) - optimized with single query
         $sixMonthsAgo = Carbon::now()->subMonths(5)->startOfMonth();
         
@@ -128,6 +147,7 @@ class DashboardController extends Controller
             'upcomingPayments' => $upcomingPayments,
             'highPriorityExpenses' => $highPriorityExpenses,
             'monthlyTrend' => $monthlyTrend,
+            'activeGoals' => $activeGoals,
         ]);
     }
 }

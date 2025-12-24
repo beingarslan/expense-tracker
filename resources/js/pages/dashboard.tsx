@@ -1,8 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { dashboard } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { type BreadcrumbItem, type SharedData } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
 import {
     Bar,
     BarChart,
@@ -87,6 +87,15 @@ interface DashboardData {
         income: number;
         expense: number;
     }>;
+    activeGoals: Array<{
+        id: number;
+        title: string;
+        target_amount: number;
+        current_amount: number;
+        target_date: string;
+        progress_percentage: number;
+        remaining_amount: number;
+    }>;
 }
 
 export default function Dashboard({
@@ -96,7 +105,11 @@ export default function Dashboard({
     upcomingPayments,
     highPriorityExpenses,
     monthlyTrend,
+    activeGoals,
 }: DashboardData) {
+    const { auth } = usePage<SharedData>().props;
+    const userCurrency = auth.user.preferred_currency || 'USD';
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
@@ -114,7 +127,7 @@ export default function Dashboard({
                                     : 'text-red-600 dark:text-red-400'
                             }`}
                         >
-                            {formatCurrency(summary.monthly.balance)}
+                            {formatCurrency(summary.monthly.balance, userCurrency)}
                         </p>
                         <div className="mt-4 flex justify-between text-sm">
                             <div>
@@ -122,7 +135,7 @@ export default function Dashboard({
                                     Income
                                 </p>
                                 <p className="font-semibold text-green-600 dark:text-green-400">
-                                    {formatCurrency(summary.monthly.income)}
+                                    {formatCurrency(summary.monthly.income, userCurrency)}
                                 </p>
                             </div>
                             <div>
@@ -130,7 +143,7 @@ export default function Dashboard({
                                     Expenses
                                 </p>
                                 <p className="font-semibold text-red-600 dark:text-red-400">
-                                    {formatCurrency(summary.monthly.expenses)}
+                                    {formatCurrency(summary.monthly.expenses, userCurrency)}
                                 </p>
                             </div>
                         </div>
@@ -147,7 +160,7 @@ export default function Dashboard({
                                     : 'text-red-600 dark:text-red-400'
                             }`}
                         >
-                            {formatCurrency(summary.yearly.balance)}
+                            {formatCurrency(summary.yearly.balance, userCurrency)}
                         </p>
                         <div className="mt-4 flex justify-between text-sm">
                             <div>
@@ -155,7 +168,7 @@ export default function Dashboard({
                                     Income
                                 </p>
                                 <p className="font-semibold text-green-600 dark:text-green-400">
-                                    {formatCurrency(summary.yearly.income)}
+                                    {formatCurrency(summary.yearly.income, userCurrency)}
                                 </p>
                             </div>
                             <div>
@@ -163,7 +176,7 @@ export default function Dashboard({
                                     Expenses
                                 </p>
                                 <p className="font-semibold text-red-600 dark:text-red-400">
-                                    {formatCurrency(summary.yearly.expenses)}
+                                    {formatCurrency(summary.yearly.expenses, userCurrency)}
                                 </p>
                             </div>
                         </div>
@@ -326,6 +339,83 @@ export default function Dashboard({
                         </div>
                     )}
                 </div>
+
+                {/* Financial Goals Section */}
+                {activeGoals && activeGoals.length > 0 && (
+                    <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-neutral-900">
+                        <div className="flex items-center justify-between mb-4">
+                            <h3 className="text-lg font-semibold">
+                                Active Financial Goals
+                            </h3>
+                            <a
+                                href="/financial-goals"
+                                className="text-sm text-blue-600 hover:underline dark:text-blue-400"
+                            >
+                                View All
+                            </a>
+                        </div>
+                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {activeGoals.map((goal) => (
+                                <div
+                                    key={goal.id}
+                                    className="rounded-lg border border-neutral-200 p-4 dark:border-neutral-700"
+                                >
+                                    <h4 className="mb-2 font-semibold">
+                                        {goal.title}
+                                    </h4>
+                                    <div className="mb-3">
+                                        <div className="mb-1 flex justify-between text-sm">
+                                            <span className="text-neutral-600 dark:text-neutral-400">
+                                                Progress
+                                            </span>
+                                            <span className="font-medium">
+                                                {goal.progress_percentage.toFixed(
+                                                    1,
+                                                )}
+                                                %
+                                            </span>
+                                        </div>
+                                        <div className="h-2 rounded-full bg-neutral-200 dark:bg-neutral-700">
+                                            <div
+                                                className="h-full rounded-full bg-blue-600"
+                                                style={{
+                                                    width: `${Math.min(goal.progress_percentage, 100)}%`,
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2 text-sm">
+                                        <div>
+                                            <p className="text-neutral-600 dark:text-neutral-400">
+                                                Current
+                                            </p>
+                                            <p className="font-semibold">
+                                                {formatCurrency(
+                                                    goal.current_amount,
+                                                    userCurrency,
+                                                )}
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <p className="text-neutral-600 dark:text-neutral-400">
+                                                Target
+                                            </p>
+                                            <p className="font-semibold">
+                                                {formatCurrency(
+                                                    goal.target_amount,
+                                                    userCurrency,
+                                                )}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p className="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
+                                        Target: {formatDate(goal.target_date)}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {/* Charts Section */}
                 <div className="grid gap-4 md:grid-cols-2">
