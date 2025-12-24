@@ -13,6 +13,7 @@ class Expense extends Model
     protected $fillable = [
         'user_id',
         'category_id',
+        'financial_goal_id',
         'title',
         'amount',
         'currency',
@@ -25,7 +26,7 @@ class Expense extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'date' => 'date',
+        'date' => 'date:Y-m-d',
         'is_recurring' => 'boolean',
         'type' => 'string',
         'priority' => 'string',
@@ -39,5 +40,10 @@ class Expense extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function financialGoal(): BelongsTo
+    {
+        return $this->belongsTo(FinancialGoal::class);
     }
 }

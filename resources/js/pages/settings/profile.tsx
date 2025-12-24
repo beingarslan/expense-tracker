@@ -89,6 +89,38 @@ export default function Profile({
                                     />
                                 </div>
 
+                                <div className="grid gap-2">
+                                    <Label htmlFor="preferred_currency">
+                                        Preferred Currency
+                                    </Label>
+
+                                    <select
+                                        id="preferred_currency"
+                                        name="preferred_currency"
+                                        defaultValue={
+                                            auth.user.preferred_currency || 'USD'
+                                        }
+                                        className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    >
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                        <option value="JPY">JPY (¥)</option>
+                                        <option value="INR">INR (₹)</option>
+                                        <option value="CAD">CAD (C$)</option>
+                                        <option value="AUD">AUD (A$)</option>
+                                        <option value="CNY">CNY (¥)</option>
+                                        <option value="CHF">CHF</option>
+                                        <option value="SEK">SEK (kr)</option>
+                                        <option value="PKR">PKR (₨)</option>
+                                    </select>
+
+                                    <InputError
+                                        className="mt-2"
+                                        message={errors.preferred_currency}
+                                    />
+                                </div>
+
                                 {mustVerifyEmail &&
                                     auth.user.email_verified_at === null && (
                                         <div>

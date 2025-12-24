@@ -20,6 +20,7 @@ import {
     DollarSign,
     Tags,
     RepeatIcon,
+    Target,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 
@@ -33,6 +34,11 @@ const mainNavItems: NavItem[] = [
         title: 'Expenses',
         href: '/expenses',
         icon: DollarSign,
+    },
+    {
+        title: 'Financial Goals',
+        href: '/financial-goals',
+        icon: Target,
     },
     {
         title: 'Categories',

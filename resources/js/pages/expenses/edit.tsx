@@ -32,25 +32,42 @@ interface Expense {
     currency: string;
     type: string;
     category_id: number | null;
+    financial_goal_id: number | null;
     date: string;
     notes: string;
     priority: string;
     is_recurring: boolean;
 }
 
+interface FinancialGoal {
+    id: number;
+    title: string;
+    target_date: string;
+}
+
 interface EditExpenseProps {
     expense: Expense;
     categories: Category[];
+    userCurrency: string;
+    financialGoals: FinancialGoal[];
 }
 
-export default function EditExpense({ expense, categories }: EditExpenseProps) {
+export default function EditExpense({ expense, categories, userCurrency, financialGoals }: EditExpenseProps) {
+    // Format date to YYYY-MM-DD for the date input
+    let formattedDate = expense.date;
+    if (expense.date) {
+        const dateObj = new Date(expense.date);
+        formattedDate = dateObj.toISOString().split('T')[0];
+    }
+    
     const { data, setData, put, processing, errors } = useForm({
         title: expense.title,
         amount: expense.amount.toString(),
-        currency: expense.currency || 'USD',
+        currency: expense.currency || userCurrency || 'USD',
         type: expense.type,
         category_id: expense.category_id?.toString() || '',
-        date: expense.date,
+        financial_goal_id: expense.financial_goal_id?.toString() || '',
+        date: formattedDate,
         notes: expense.notes || '',
         priority: expense.priority,
         is_recurring: expense.is_recurring,
@@ -238,6 +255,35 @@ export default function EditExpense({ expense, categories }: EditExpenseProps) {
                                     </p>
                                 )}
                             </div>
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="financial_goal_id"
+                                className="mb-2 block text-sm font-medium"
+                            >
+                                Financial Goal (Optional)
+                            </label>
+                            <select
+                                id="financial_goal_id"
+                                value={data.financial_goal_id}
+                                onChange={(e) =>
+                                    setData('financial_goal_id', e.target.value)
+                                }
+                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                            >
+                                <option value="">None - Not linked to a goal</option>
+                                {financialGoals.map((goal) => (
+                                    <option key={goal.id} value={goal.id}>
+                                        {goal.title}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.financial_goal_id && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.financial_goal_id}
+                                </p>
+                            )}
                         </div>
 
                         <div>

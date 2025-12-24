@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'preferred_currency',
     ];
 
     /**
@@ -64,5 +65,10 @@ class User extends Authenticatable
     public function recurringPayments(): HasMany
     {
         return $this->hasMany(RecurringPayment::class);
+    }
+
+    public function financialGoals(): HasMany
+    {
+        return $this->hasMany(FinancialGoal::class);
     }
 }

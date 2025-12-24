@@ -39,11 +39,13 @@ interface RecurringPayment {
 interface RecurringPaymentsProps {
     payments: RecurringPayment[];
     categories: Category[];
+    userCurrency: string;
 }
 
 export default function RecurringPaymentsIndex({
     payments,
     categories,
+    userCurrency,
 }: RecurringPaymentsProps) {
     const [showModal, setShowModal] = useState(false);
     const [editingPayment, setEditingPayment] =
@@ -52,7 +54,7 @@ export default function RecurringPaymentsIndex({
     const { data, setData, post, put, reset, processing, errors } = useForm({
         title: '',
         amount: '',
-        currency: 'USD',
+        currency: userCurrency || 'USD',
         category_id: '',
         frequency: 'monthly',
         start_date: new Date().toISOString().split('T')[0],
@@ -84,15 +86,23 @@ export default function RecurringPaymentsIndex({
 
     const handleEdit = (payment: RecurringPayment) => {
         setEditingPayment(payment);
+        
+        // Format dates to YYYY-MM-DD for date inputs
+        const formatDate = (date: string | undefined) => {
+            if (!date) return '';
+            const dateObj = new Date(date);
+            return dateObj.toISOString().split('T')[0];
+        };
+        
         setData({
             title: payment.title,
             amount: payment.amount.toString(),
             currency: payment.currency || 'USD',
             category_id: payment.category?.id.toString() || '',
             frequency: payment.frequency,
-            start_date: payment.start_date,
-            next_payment_date: payment.next_payment_date,
-            end_date: payment.end_date || '',
+            start_date: formatDate(payment.start_date),
+            next_payment_date: formatDate(payment.next_payment_date),
+            end_date: formatDate(payment.end_date),
             notes: payment.notes || '',
             status: payment.status,
         });
