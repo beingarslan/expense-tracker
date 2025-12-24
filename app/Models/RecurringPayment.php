@@ -26,9 +26,9 @@ class RecurringPayment extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'start_date' => 'date',
-        'next_payment_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'date:Y-m-d',
+        'next_payment_date' => 'date:Y-m-d',
+        'end_date' => 'date:Y-m-d',
         'frequency' => 'string',
         'status' => 'string',
     ];

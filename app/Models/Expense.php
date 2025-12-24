@@ -26,7 +26,7 @@ class Expense extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'date' => 'date',
+        'date' => 'date:Y-m-d',
         'is_recurring' => 'boolean',
         'type' => 'string',
         'priority' => 'string',

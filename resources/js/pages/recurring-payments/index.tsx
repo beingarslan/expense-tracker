@@ -86,15 +86,23 @@ export default function RecurringPaymentsIndex({
 
     const handleEdit = (payment: RecurringPayment) => {
         setEditingPayment(payment);
+        
+        // Format dates to YYYY-MM-DD for date inputs
+        const formatDate = (date: string | undefined) => {
+            if (!date) return '';
+            const dateObj = new Date(date);
+            return dateObj.toISOString().split('T')[0];
+        };
+        
         setData({
             title: payment.title,
             amount: payment.amount.toString(),
             currency: payment.currency || 'USD',
             category_id: payment.category?.id.toString() || '',
             frequency: payment.frequency,
-            start_date: payment.start_date,
-            next_payment_date: payment.next_payment_date,
-            end_date: payment.end_date || '',
+            start_date: formatDate(payment.start_date),
+            next_payment_date: formatDate(payment.next_payment_date),
+            end_date: formatDate(payment.end_date),
             notes: payment.notes || '',
             status: payment.status,
         });

@@ -103,12 +103,20 @@ export default function FinancialGoalsIndex({
 
     const handleEdit = (goal: FinancialGoal) => {
         setEditingGoal(goal);
+        
+        // Format target_date to YYYY-MM-DD for the date input
+        let formattedDate = '';
+        if (goal.target_date) {
+            const dateObj = new Date(goal.target_date);
+            formattedDate = dateObj.toISOString().split('T')[0];
+        }
+        
         setData({
             title: goal.title,
             description: goal.description || '',
             target_amount: goal.target_amount.toString(),
             current_amount: goal.current_amount.toString(),
-            target_date: goal.target_date,
+            target_date: formattedDate,
             priority: goal.priority,
             notes: goal.notes || '',
             status: goal.status,

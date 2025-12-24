@@ -53,6 +53,13 @@ interface EditExpenseProps {
 }
 
 export default function EditExpense({ expense, categories, userCurrency, financialGoals }: EditExpenseProps) {
+    // Format date to YYYY-MM-DD for the date input
+    let formattedDate = expense.date;
+    if (expense.date) {
+        const dateObj = new Date(expense.date);
+        formattedDate = dateObj.toISOString().split('T')[0];
+    }
+    
     const { data, setData, put, processing, errors } = useForm({
         title: expense.title,
         amount: expense.amount.toString(),
@@ -60,7 +67,7 @@ export default function EditExpense({ expense, categories, userCurrency, financi
         type: expense.type,
         category_id: expense.category_id?.toString() || '',
         financial_goal_id: expense.financial_goal_id?.toString() || '',
-        date: expense.date,
+        date: formattedDate,
         notes: expense.notes || '',
         priority: expense.priority,
         is_recurring: expense.is_recurring,
