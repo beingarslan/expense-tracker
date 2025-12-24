@@ -24,6 +24,7 @@ class RecurringPaymentController extends Controller
         return Inertia::render('recurring-payments/index', [
             'payments' => $payments,
             'categories' => $categories,
+            'userCurrency' => auth()->user()->preferred_currency ?? 'USD',
         ]);
     }
 
@@ -55,7 +56,7 @@ class RecurringPaymentController extends Controller
 
         $validated['user_id'] = auth()->id();
         if (!isset($validated['currency'])) {
-            $validated['currency'] = 'USD';
+            $validated['currency'] = auth()->user()->preferred_currency ?? 'USD';
         }
 
         RecurringPayment::create($validated);

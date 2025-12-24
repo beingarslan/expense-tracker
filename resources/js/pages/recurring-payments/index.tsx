@@ -39,11 +39,13 @@ interface RecurringPayment {
 interface RecurringPaymentsProps {
     payments: RecurringPayment[];
     categories: Category[];
+    userCurrency: string;
 }
 
 export default function RecurringPaymentsIndex({
     payments,
     categories,
+    userCurrency,
 }: RecurringPaymentsProps) {
     const [showModal, setShowModal] = useState(false);
     const [editingPayment, setEditingPayment] =
@@ -52,7 +54,7 @@ export default function RecurringPaymentsIndex({
     const { data, setData, post, put, reset, processing, errors } = useForm({
         title: '',
         amount: '',
-        currency: 'USD',
+        currency: userCurrency || 'USD',
         category_id: '',
         frequency: 'monthly',
         start_date: new Date().toISOString().split('T')[0],

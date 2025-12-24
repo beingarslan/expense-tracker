@@ -74,10 +74,15 @@ class ExpenseController extends Controller
     public function create()
     {
         $categories = Category::where('user_id', auth()->id())->get();
+        $financialGoals = \App\Models\FinancialGoal::where('user_id', auth()->id())
+            ->where('status', 'active')
+            ->orderBy('target_date', 'asc')
+            ->get(['id', 'title', 'target_date']);
 
         return Inertia::render('expenses/create', [
             'categories' => $categories,
             'userCurrency' => auth()->user()->preferred_currency ?? 'USD',
+            'financialGoals' => $financialGoals,
         ]);
     }
 
@@ -97,6 +102,15 @@ class ExpenseController extends Controller
                 function ($attribute, $value, $fail) {
                     if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
                         $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
+            'financial_goal_id' => [
+                'nullable',
+                'exists:financial_goals,id',
+                function ($attribute, $value, $fail) {
+                    if ($value && !\App\Models\FinancialGoal::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected financial goal does not belong to you.');
                     }
                 },
             ],
@@ -142,11 +156,16 @@ class ExpenseController extends Controller
         }
 
         $categories = Category::where('user_id', auth()->id())->get();
+        $financialGoals = \App\Models\FinancialGoal::where('user_id', auth()->id())
+            ->where('status', 'active')
+            ->orderBy('target_date', 'asc')
+            ->get(['id', 'title', 'target_date']);
 
         return Inertia::render('expenses/edit', [
             'expense' => $expense,
             'categories' => $categories,
             'userCurrency' => auth()->user()->preferred_currency ?? 'USD',
+            'financialGoals' => $financialGoals,
         ]);
     }
 
@@ -170,6 +189,15 @@ class ExpenseController extends Controller
                 function ($attribute, $value, $fail) {
                     if ($value && !Category::where('id', $value)->where('user_id', auth()->id())->exists()) {
                         $fail('The selected category does not belong to you.');
+                    }
+                },
+            ],
+            'financial_goal_id' => [
+                'nullable',
+                'exists:financial_goals,id',
+                function ($attribute, $value, $fail) {
+                    if ($value && !\App\Models\FinancialGoal::where('id', $value)->where('user_id', auth()->id())->exists()) {
+                        $fail('The selected financial goal does not belong to you.');
                     }
                 },
             ],

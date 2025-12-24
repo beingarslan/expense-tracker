@@ -25,18 +25,26 @@ interface Category {
     type: string;
 }
 
+interface FinancialGoal {
+    id: number;
+    title: string;
+    target_date: string;
+}
+
 interface CreateExpenseProps {
     categories: Category[];
     userCurrency: string;
+    financialGoals: FinancialGoal[];
 }
 
-export default function CreateExpense({ categories, userCurrency }: CreateExpenseProps) {
+export default function CreateExpense({ categories, userCurrency, financialGoals }: CreateExpenseProps) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         amount: '',
         currency: userCurrency || 'USD',
         type: 'expense',
         category_id: '',
+        financial_goal_id: '',
         date: new Date().toISOString().split('T')[0],
         notes: '',
         priority: 'medium',
@@ -225,6 +233,35 @@ export default function CreateExpense({ categories, userCurrency }: CreateExpens
                                     </p>
                                 )}
                             </div>
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="financial_goal_id"
+                                className="mb-2 block text-sm font-medium"
+                            >
+                                Financial Goal (Optional)
+                            </label>
+                            <select
+                                id="financial_goal_id"
+                                value={data.financial_goal_id}
+                                onChange={(e) =>
+                                    setData('financial_goal_id', e.target.value)
+                                }
+                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                            >
+                                <option value="">None - Not linked to a goal</option>
+                                {financialGoals.map((goal) => (
+                                    <option key={goal.id} value={goal.id}>
+                                        {goal.title}
+                                    </option>
+                                ))}
+                            </select>
+                            {errors.financial_goal_id && (
+                                <p className="mt-1 text-sm text-red-600">
+                                    {errors.financial_goal_id}
+                                </p>
+                            )}
                         </div>
 
                         <div>
