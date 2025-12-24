@@ -98,9 +98,10 @@ export default function Profile({
                                         id="preferred_currency"
                                         name="preferred_currency"
                                         defaultValue={
-                                            auth.user.preferred_currency || 'USD'
+                                            auth.user.preferred_currency ||
+                                            'USD'
                                         }
-                                        className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                        className="mt-1 block w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                     >
                                         <option value="USD">USD ($)</option>
                                         <option value="EUR">EUR (€)</option>

@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -37,7 +37,11 @@ interface CreateExpenseProps {
     financialGoals: FinancialGoal[];
 }
 
-export default function CreateExpense({ categories, userCurrency, financialGoals }: CreateExpenseProps) {
+export default function CreateExpense({
+    categories,
+    userCurrency,
+    financialGoals,
+}: CreateExpenseProps) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         amount: '',
@@ -78,7 +82,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                 onChange={(e) =>
                                     setData('title', e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 required
                             />
                             {errors.title && (
@@ -104,7 +108,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                     onChange={(e) =>
                                         setData('amount', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.amount && (
@@ -127,7 +131,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                     onChange={(e) =>
                                         setData('currency', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="USD">USD ($)</option>
                                     <option value="EUR">EUR (€)</option>
@@ -164,7 +168,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                     onChange={(e) =>
                                         setData('date', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.date && (
@@ -189,7 +193,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                     onChange={(e) =>
                                         setData('type', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="expense">Expense</option>
                                     <option value="income">Income</option>
@@ -214,13 +218,11 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                     onChange={(e) =>
                                         setData('category_id', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="">Select Category</option>
                                     {categories
-                                        .filter(
-                                            (cat) => cat.type === data.type,
-                                        )
+                                        .filter((cat) => cat.type === data.type)
                                         .map((cat) => (
                                             <option key={cat.id} value={cat.id}>
                                                 {cat.name}
@@ -248,9 +250,11 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                 onChange={(e) =>
                                     setData('financial_goal_id', e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
-                                <option value="">None - Not linked to a goal</option>
+                                <option value="">
+                                    None - Not linked to a goal
+                                </option>
                                 {financialGoals.map((goal) => (
                                     <option key={goal.id} value={goal.id}>
                                         {goal.title}
@@ -277,7 +281,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                 onChange={(e) =>
                                     setData('priority', e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
@@ -304,7 +308,7 @@ export default function CreateExpense({ categories, userCurrency, financialGoals
                                 onChange={(e) =>
                                     setData('notes', e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             />
                             {errors.notes && (
                                 <p className="mt-1 text-sm text-red-600">

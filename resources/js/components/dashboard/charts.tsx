@@ -2,8 +2,6 @@ import { cn, formatCurrency } from '@/lib/utils';
 import {
     Area,
     AreaChart,
-    Bar,
-    BarChart,
     CartesianGrid,
     Cell,
     Legend,
@@ -67,9 +65,23 @@ export function TrendAreaChart({ data, userCurrency }: TrendAreaChartProps) {
         <ResponsiveContainer width="100%" height={350}>
             <AreaChart data={data}>
                 <defs>
-                    <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#22c55e" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#22c55e" stopOpacity={0.1} />
+                    <linearGradient
+                        id="incomeGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                    >
+                        <stop
+                            offset="5%"
+                            stopColor="#22c55e"
+                            stopOpacity={0.8}
+                        />
+                        <stop
+                            offset="95%"
+                            stopColor="#22c55e"
+                            stopOpacity={0.1}
+                        />
                     </linearGradient>
                     <linearGradient
                         id="expenseGradient"
@@ -78,8 +90,16 @@ export function TrendAreaChart({ data, userCurrency }: TrendAreaChartProps) {
                         x2="0"
                         y2="1"
                     >
-                        <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1} />
+                        <stop
+                            offset="5%"
+                            stopColor="#ef4444"
+                            stopOpacity={0.8}
+                        />
+                        <stop
+                            offset="95%"
+                            stopColor="#ef4444"
+                            stopOpacity={0.1}
+                        />
                     </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
@@ -135,7 +155,10 @@ interface BalanceLineChartProps {
     userCurrency: string;
 }
 
-export function BalanceLineChart({ data, userCurrency }: BalanceLineChartProps) {
+export function BalanceLineChart({
+    data,
+    userCurrency,
+}: BalanceLineChartProps) {
     return (
         <ResponsiveContainer width="100%" height={300}>
             <LineChart data={data}>
@@ -186,9 +209,17 @@ interface GoalProgressChartProps {
 
 export function GoalProgressChart({ goals }: GoalProgressChartProps) {
     const chartData = goals.map((goal) => ({
-        name: goal.title.length > 20 ? goal.title.substring(0, 20) + '...' : goal.title,
+        name:
+            goal.title.length > 20
+                ? goal.title.substring(0, 20) + '...'
+                : goal.title,
         value: goal.progress_percentage,
-        fill: goal.progress_percentage >= 75 ? '#22c55e' : goal.progress_percentage >= 50 ? '#3b82f6' : '#f59e0b',
+        fill:
+            goal.progress_percentage >= 75
+                ? '#22c55e'
+                : goal.progress_percentage >= 50
+                  ? '#3b82f6'
+                  : '#f59e0b',
     }));
 
     return (
@@ -203,7 +234,11 @@ export function GoalProgressChart({ goals }: GoalProgressChartProps) {
             >
                 <RadialBar
                     minAngle={15}
-                    label={{ position: 'insideStart', fill: '#fff', fontSize: 12 }}
+                    label={{
+                        position: 'insideStart',
+                        fill: '#fff',
+                        fontSize: 12,
+                    }}
                     background
                     clockWise
                     dataKey="value"
@@ -242,7 +277,10 @@ interface CategoryPieChartProps {
     userCurrency: string;
 }
 
-export function CategoryPieChart({ data, userCurrency }: CategoryPieChartProps) {
+export function CategoryPieChart({
+    data,
+    userCurrency,
+}: CategoryPieChartProps) {
     const chartData = data.map((item) => ({
         name: item.category.name,
         value: parseFloat(item.total.toString()),
@@ -268,11 +306,9 @@ export function CategoryPieChart({ data, userCurrency }: CategoryPieChartProps) 
                         const radius =
                             innerRadius + (outerRadius - innerRadius) * 0.5;
                         const x =
-                            cx +
-                            radius * Math.cos((-midAngle * Math.PI) / 180);
+                            cx + radius * Math.cos((-midAngle * Math.PI) / 180);
                         const y =
-                            cy +
-                            radius * Math.sin((-midAngle * Math.PI) / 180);
+                            cy + radius * Math.sin((-midAngle * Math.PI) / 180);
 
                         return (
                             <text

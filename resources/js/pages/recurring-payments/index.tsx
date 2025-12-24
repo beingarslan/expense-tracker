@@ -1,8 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, router } from '@inertiajs/react';
-import { PlusCircle, Edit, Trash2, Clock } from 'lucide-react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { Clock, Edit, PlusCircle, Trash2 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -86,14 +86,14 @@ export default function RecurringPaymentsIndex({
 
     const handleEdit = (payment: RecurringPayment) => {
         setEditingPayment(payment);
-        
+
         // Format dates to YYYY-MM-DD for date inputs
         const formatDate = (date: string | undefined) => {
             if (!date) return '';
             const dateObj = new Date(date);
             return dateObj.toISOString().split('T')[0];
         };
-        
+
         setData({
             title: payment.title,
             amount: payment.amount.toString(),
@@ -200,14 +200,19 @@ export default function RecurringPaymentsIndex({
                                                 </span>
                                                 <span>
                                                     Next:{' '}
-                                                    {formatDate(payment.next_payment_date)}
+                                                    {formatDate(
+                                                        payment.next_payment_date,
+                                                    )}
                                                 </span>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="text-lg font-semibold text-orange-600 dark:text-orange-400">
-                                            {formatCurrency(payment.amount, payment.currency)}
+                                            {formatCurrency(
+                                                payment.amount,
+                                                payment.currency,
+                                            )}
                                         </span>
                                         <div className="flex gap-2">
                                             <button
@@ -271,7 +276,10 @@ export default function RecurringPaymentsIndex({
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-semibold">
-                                            {formatCurrency(payment.amount, payment.currency)}
+                                            {formatCurrency(
+                                                payment.amount,
+                                                payment.currency,
+                                            )}
                                         </span>
                                         <div className="flex gap-2">
                                             <button
@@ -310,7 +318,10 @@ export default function RecurringPaymentsIndex({
                     aria-labelledby="payment-modal-title"
                 >
                     <div className="max-h-screen w-full max-w-md overflow-y-auto rounded-xl bg-white p-6 dark:bg-neutral-900">
-                        <h2 id="payment-modal-title" className="mb-4 text-xl font-bold">
+                        <h2
+                            id="payment-modal-title"
+                            className="mb-4 text-xl font-bold"
+                        >
                             {editingPayment
                                 ? 'Edit Recurring Payment'
                                 : 'Add Recurring Payment'}
@@ -326,7 +337,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('title', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.title && (
@@ -347,7 +358,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('amount', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.amount && (
@@ -366,7 +377,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('currency', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="USD">USD ($)</option>
                                     <option value="EUR">EUR (€)</option>
@@ -396,7 +407,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('category_id', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="">Select Category</option>
                                     {categories.map((cat) => (
@@ -416,7 +427,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('frequency', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="daily">Daily</option>
                                     <option value="weekly">Weekly</option>
@@ -434,9 +445,12 @@ export default function RecurringPaymentsIndex({
                                         type="date"
                                         value={data.start_date}
                                         onChange={(e) =>
-                                            setData('start_date', e.target.value)
+                                            setData(
+                                                'start_date',
+                                                e.target.value,
+                                            )
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                         required
                                     />
                                 </div>
@@ -453,7 +467,7 @@ export default function RecurringPaymentsIndex({
                                                 e.target.value,
                                             )
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                         required
                                     />
                                 </div>
@@ -469,7 +483,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('end_date', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                             </div>
 
@@ -482,7 +496,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('status', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="active">Active</option>
                                     <option value="paused">Paused</option>
@@ -500,7 +514,7 @@ export default function RecurringPaymentsIndex({
                                     onChange={(e) =>
                                         setData('notes', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                             </div>
 

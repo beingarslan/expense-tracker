@@ -20,7 +20,10 @@ export function resolveUrl(url: NonNullable<InertiaLinkProps['href']>): string {
 /**
  * Format currency with proper symbol and locale
  */
-export function formatCurrency(amount: number, currency: string = 'USD'): string {
+export function formatCurrency(
+    amount: number,
+    currency: string = 'USD',
+): string {
     const currencySymbols: Record<string, string> = {
         USD: '$',
         EUR: '€',
@@ -71,4 +74,3 @@ export function formatDateTime(date: string | Date): string {
         minute: '2-digit',
     }).format(d);
 }
-

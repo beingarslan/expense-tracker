@@ -15,11 +15,11 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
     BookOpen,
+    DollarSign,
     Folder,
     LayoutGrid,
-    DollarSign,
-    Tags,
     RepeatIcon,
+    Tags,
     Target,
 } from 'lucide-react';
 import AppLogo from './app-logo';

@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, router } from '@inertiajs/react';
-import { PlusCircle, Edit, Trash2 } from 'lucide-react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { Edit, PlusCircle, Trash2 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -143,9 +143,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                     </div>
                                     <div className="flex gap-2">
                                         <button
-                                            onClick={() =>
-                                                handleEdit(category)
-                                            }
+                                            onClick={() => handleEdit(category)}
                                             className="rounded p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                             aria-label={`Edit ${category.name} category`}
                                         >
@@ -203,9 +201,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                     </div>
                                     <div className="flex gap-2">
                                         <button
-                                            onClick={() =>
-                                                handleEdit(category)
-                                            }
+                                            onClick={() => handleEdit(category)}
                                             className="rounded p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                                             aria-label={`Edit ${category.name} category`}
                                         >
@@ -230,17 +226,18 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
 
             {/* Modal */}
             {showModal && (
-                <div 
+                <div
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="category-modal-title"
                 >
                     <div className="max-h-screen w-full max-w-md overflow-y-auto rounded-xl bg-white p-6 dark:bg-neutral-900">
-                        <h2 id="category-modal-title" className="mb-4 text-xl font-bold">
-                            {editingCategory
-                                ? 'Edit Category'
-                                : 'Add Category'}
+                        <h2
+                            id="category-modal-title"
+                            className="mb-4 text-xl font-bold"
+                        >
+                            {editingCategory ? 'Edit Category' : 'Add Category'}
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -253,7 +250,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                     onChange={(e) =>
                                         setData('name', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.name && (
@@ -272,7 +269,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                     onChange={(e) =>
                                         setData('type', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 >
                                     <option value="expense">Expense</option>
                                     <option value="income">Income</option>
@@ -313,7 +310,7 @@ export default function CategoriesIndex({ categories }: CategoriesProps) {
                                     onChange={(e) =>
                                         setData('description', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                                 {errors.description && (
                                     <p className="mt-1 text-sm text-red-600">

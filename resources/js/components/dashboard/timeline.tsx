@@ -18,19 +18,21 @@ interface TimelineEvent {
 
 interface TimelineProps {
     events: TimelineEvent[];
-    userCurrency: string;
 }
 
-export function Timeline({ events, userCurrency }: TimelineProps) {
+export function Timeline({ events }: TimelineProps) {
     return (
         <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-6 top-0 h-full w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-transparent dark:from-blue-400 dark:via-purple-400" />
+            <div className="absolute top-0 left-6 h-full w-0.5 bg-gradient-to-b from-blue-500 via-purple-500 to-transparent dark:from-blue-400 dark:via-purple-400" />
 
             {/* Timeline events */}
             <div className="space-y-6">
-                {events.map((event, index) => (
-                    <div key={`${event.type}-${event.id}`} className="relative flex gap-4">
+                {events.map((event) => (
+                    <div
+                        key={`${event.type}-${event.id}`}
+                        className="relative flex gap-4"
+                    >
                         {/* Timeline dot */}
                         <div
                             className={`relative z-10 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-4 border-white shadow-md dark:border-neutral-900 ${
@@ -55,7 +57,7 @@ export function Timeline({ events, userCurrency }: TimelineProps) {
                             <div className="flex items-start justify-between gap-4">
                                 <div className="min-w-0 flex-1">
                                     <div className="flex items-center gap-2">
-                                        <h4 className="font-semibold truncate">
+                                        <h4 className="truncate font-semibold">
                                             {event.title}
                                         </h4>
                                         {event.category && (
@@ -64,7 +66,8 @@ export function Timeline({ events, userCurrency }: TimelineProps) {
                                                     className="h-2 w-2 rounded-full"
                                                     style={{
                                                         backgroundColor:
-                                                            event.category.color,
+                                                            event.category
+                                                                .color,
                                                     }}
                                                 />
                                                 {event.category.name}
@@ -77,7 +80,7 @@ export function Timeline({ events, userCurrency }: TimelineProps) {
                                     {event.type === 'goal' &&
                                         event.progress !== undefined && (
                                             <div className="mt-2">
-                                                <div className="flex items-center justify-between text-xs mb-1">
+                                                <div className="mb-1 flex items-center justify-between text-xs">
                                                     <span className="text-neutral-600 dark:text-neutral-400">
                                                         Progress
                                                     </span>
@@ -110,7 +113,10 @@ export function Timeline({ events, userCurrency }: TimelineProps) {
                                         }`}
                                     >
                                         {event.subtype === 'income' ? '+' : ''}
-                                        {formatCurrency(event.amount, event.currency)}
+                                        {formatCurrency(
+                                            event.amount,
+                                            event.currency,
+                                        )}
                                     </p>
                                     {event.type === 'goal' && (
                                         <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">

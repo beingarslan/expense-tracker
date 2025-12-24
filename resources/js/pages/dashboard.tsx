@@ -5,10 +5,13 @@ import {
     GoalProgressChart,
     TrendAreaChart,
 } from '@/components/dashboard/charts';
-import { Sparkline } from '@/components/dashboard/sparkline';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { Timeline } from '@/components/dashboard/timeline';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -19,7 +22,6 @@ import {
     ArrowDownRight,
     ArrowUpRight,
     ChevronDown,
-    DollarSign,
     PiggyBank,
     TrendingUp,
     Wallet,
@@ -138,7 +140,6 @@ export default function Dashboard({
     upcomingPayments,
     highPriorityExpenses,
     monthlyTrend,
-    weeklyTrend,
     timelineEvents,
     activeGoals,
 }: DashboardData) {
@@ -154,9 +155,12 @@ export default function Dashboard({
                 {/* Welcome Section */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-3xl font-bold">Financial Dashboard</h1>
+                        <h1 className="text-3xl font-bold">
+                            Financial Dashboard
+                        </h1>
                         <p className="mt-1 text-neutral-600 dark:text-neutral-400">
-                            Welcome back, {auth.user.name}! Here's your financial overview.
+                            Welcome back, {auth.user.name}! Here's your
+                            financial overview.
                         </p>
                     </div>
                 </div>
@@ -165,27 +169,40 @@ export default function Dashboard({
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <StatCard
                         title="Monthly Income"
-                        value={formatCurrency(summary.monthly.income, userCurrency)}
+                        value={formatCurrency(
+                            summary.monthly.income,
+                            userCurrency,
+                        )}
                         trend={{
                             value: summary.monthly.incomeChange,
                             isPositive: summary.monthly.incomeChange >= 0,
                         }}
-                        icon={<ArrowUpRight className="h-6 w-6 text-green-600" />}
+                        icon={
+                            <ArrowUpRight className="h-6 w-6 text-green-600" />
+                        }
                         valueClassName="text-green-600 dark:text-green-400"
                     />
                     <StatCard
                         title="Monthly Expenses"
-                        value={formatCurrency(summary.monthly.expenses, userCurrency)}
+                        value={formatCurrency(
+                            summary.monthly.expenses,
+                            userCurrency,
+                        )}
                         trend={{
                             value: summary.monthly.expenseChange,
                             isPositive: summary.monthly.expenseChange <= 0,
                         }}
-                        icon={<ArrowDownRight className="h-6 w-6 text-red-600" />}
+                        icon={
+                            <ArrowDownRight className="h-6 w-6 text-red-600" />
+                        }
                         valueClassName="text-red-600 dark:text-red-400"
                     />
                     <StatCard
                         title="Net Balance"
-                        value={formatCurrency(summary.monthly.balance, userCurrency)}
+                        value={formatCurrency(
+                            summary.monthly.balance,
+                            userCurrency,
+                        )}
                         subtitle={`Savings Rate: ${summary.monthly.savingsRate.toFixed(1)}%`}
                         icon={<Wallet className="h-6 w-6 text-blue-600" />}
                         valueClassName={
@@ -196,7 +213,10 @@ export default function Dashboard({
                     />
                     <StatCard
                         title="Yearly Balance"
-                        value={formatCurrency(summary.yearly.balance, userCurrency)}
+                        value={formatCurrency(
+                            summary.yearly.balance,
+                            userCurrency,
+                        )}
                         subtitle={`Total: ${formatCurrency(summary.yearly.income, userCurrency)} income`}
                         icon={<PiggyBank className="h-6 w-6 text-purple-600" />}
                         valueClassName={
@@ -213,7 +233,10 @@ export default function Dashboard({
                         title="Income vs Expenses Trend"
                         subtitle="Last 6 months financial overview"
                     >
-                        <TrendAreaChart data={monthlyTrend} userCurrency={userCurrency} />
+                        <TrendAreaChart
+                            data={monthlyTrend}
+                            userCurrency={userCurrency}
+                        />
                     </ChartCard>
 
                     <ChartCard
@@ -280,14 +303,19 @@ export default function Dashboard({
                                     key={goal.id}
                                     className="rounded-lg border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-700 dark:bg-neutral-900"
                                 >
-                                    <h4 className="mb-2 font-semibold">{goal.title}</h4>
+                                    <h4 className="mb-2 font-semibold">
+                                        {goal.title}
+                                    </h4>
                                     <div className="mb-3">
                                         <div className="mb-1 flex justify-between text-sm">
                                             <span className="text-neutral-600 dark:text-neutral-400">
                                                 Progress
                                             </span>
                                             <span className="font-medium">
-                                                {goal.progress_percentage.toFixed(1)}%
+                                                {goal.progress_percentage.toFixed(
+                                                    1,
+                                                )}
+                                                %
                                             </span>
                                         </div>
                                         <div className="h-2 rounded-full bg-neutral-200 dark:bg-neutral-700">
@@ -305,7 +333,10 @@ export default function Dashboard({
                                                 Current
                                             </p>
                                             <p className="font-semibold">
-                                                {formatCurrency(goal.current_amount, userCurrency)}
+                                                {formatCurrency(
+                                                    goal.current_amount,
+                                                    userCurrency,
+                                                )}
                                             </p>
                                         </div>
                                         <div>
@@ -313,7 +344,10 @@ export default function Dashboard({
                                                 Target
                                             </p>
                                             <p className="font-semibold">
-                                                {formatCurrency(goal.target_amount, userCurrency)}
+                                                {formatCurrency(
+                                                    goal.target_amount,
+                                                    userCurrency,
+                                                )}
                                             </p>
                                         </div>
                                     </div>
@@ -328,7 +362,10 @@ export default function Dashboard({
 
                 {/* Timeline Section */}
                 {timelineEvents && timelineEvents.length > 0 && (
-                    <Collapsible open={showTimeline} onOpenChange={setShowTimeline}>
+                    <Collapsible
+                        open={showTimeline}
+                        onOpenChange={setShowTimeline}
+                    >
                         <div className="relative overflow-hidden rounded-xl border border-sidebar-border/70 bg-white shadow-sm dark:border-sidebar-border dark:bg-neutral-900">
                             <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left transition-colors hover:bg-neutral-50 dark:hover:bg-neutral-800">
                                 <div>
@@ -336,7 +373,8 @@ export default function Dashboard({
                                         Financial Timeline
                                     </h3>
                                     <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-                                        View your recent transactions and upcoming goals
+                                        View your recent transactions and
+                                        upcoming goals
                                     </p>
                                 </div>
                                 <ChevronDown
@@ -346,10 +384,7 @@ export default function Dashboard({
                             <CollapsibleContent>
                                 <Separator />
                                 <div className="p-6">
-                                    <Timeline
-                                        events={timelineEvents}
-                                        userCurrency={userCurrency}
-                                    />
+                                    <Timeline events={timelineEvents} />
                                 </div>
                             </CollapsibleContent>
                         </div>
@@ -375,11 +410,16 @@ export default function Dashboard({
                                                 {payment.title}
                                             </p>
                                             <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                                                {formatDate(payment.next_payment_date)}
+                                                {formatDate(
+                                                    payment.next_payment_date,
+                                                )}
                                             </p>
                                         </div>
                                         <span className="ml-2 flex-shrink-0 font-semibold text-orange-600 dark:text-orange-400">
-                                            {formatCurrency(payment.amount, payment.currency)}
+                                            {formatCurrency(
+                                                payment.amount,
+                                                payment.currency,
+                                            )}
                                         </span>
                                     </div>
                                 ))}
@@ -394,24 +434,30 @@ export default function Dashboard({
                                 High Priority Expenses
                             </h3>
                             <div className="space-y-3">
-                                {highPriorityExpenses.slice(0, 3).map((expense) => (
-                                    <div
-                                        key={expense.id}
-                                        className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-neutral-800"
-                                    >
-                                        <div className="min-w-0 flex-1">
-                                            <p className="truncate text-sm font-medium">
-                                                {expense.title}
-                                            </p>
-                                            <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                                                {expense.category?.name || 'No category'}
-                                            </p>
+                                {highPriorityExpenses
+                                    .slice(0, 3)
+                                    .map((expense) => (
+                                        <div
+                                            key={expense.id}
+                                            className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-neutral-800"
+                                        >
+                                            <div className="min-w-0 flex-1">
+                                                <p className="truncate text-sm font-medium">
+                                                    {expense.title}
+                                                </p>
+                                                <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                                                    {expense.category?.name ||
+                                                        'No category'}
+                                                </p>
+                                            </div>
+                                            <span className="ml-2 flex-shrink-0 font-semibold text-red-600 dark:text-red-400">
+                                                {formatCurrency(
+                                                    expense.amount,
+                                                    expense.currency,
+                                                )}
+                                            </span>
                                         </div>
-                                        <span className="ml-2 flex-shrink-0 font-semibold text-red-600 dark:text-red-400">
-                                            {formatCurrency(expense.amount, expense.currency)}
-                                        </span>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
                         </div>
                     )}
@@ -432,7 +478,8 @@ export default function Dashboard({
                                             <div
                                                 className="h-3 w-3 rounded-full"
                                                 style={{
-                                                    backgroundColor: item.category.color,
+                                                    backgroundColor:
+                                                        item.category.color,
                                                 }}
                                             />
                                             <span className="text-sm">
@@ -440,7 +487,10 @@ export default function Dashboard({
                                             </span>
                                         </div>
                                         <span className="font-semibold">
-                                            {formatCurrency(item.total, userCurrency)}
+                                            {formatCurrency(
+                                                item.total,
+                                                userCurrency,
+                                            )}
                                         </span>
                                     </div>
                                 ))}
@@ -481,12 +531,14 @@ export default function Dashboard({
                                                 <div className="flex items-center gap-3">
                                                     <div
                                                         className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                                                            expense.type === 'income'
+                                                            expense.type ===
+                                                            'income'
                                                                 ? 'bg-green-100 dark:bg-green-900/20'
                                                                 : 'bg-red-100 dark:bg-red-900/20'
                                                         }`}
                                                     >
-                                                        {expense.type === 'income' ? (
+                                                        {expense.type ===
+                                                        'income' ? (
                                                             <ArrowUpRight className="h-5 w-5 text-green-600 dark:text-green-400" />
                                                         ) : (
                                                             <ArrowDownRight className="h-5 w-5 text-red-600 dark:text-red-400" />
@@ -497,20 +549,27 @@ export default function Dashboard({
                                                             {expense.title}
                                                         </p>
                                                         <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                                                            {expense.category?.name ||
+                                                            {expense.category
+                                                                ?.name ||
                                                                 'No category'}{' '}
-                                                            • {formatDate(expense.date)}
+                                                            •{' '}
+                                                            {formatDate(
+                                                                expense.date,
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <span
                                                     className={`text-lg font-semibold ${
-                                                        expense.type === 'income'
+                                                        expense.type ===
+                                                        'income'
                                                             ? 'text-green-600 dark:text-green-400'
                                                             : 'text-red-600 dark:text-red-400'
                                                     }`}
                                                 >
-                                                    {expense.type === 'income' ? '+' : '-'}
+                                                    {expense.type === 'income'
+                                                        ? '+'
+                                                        : '-'}
                                                     {formatCurrency(
                                                         expense.amount,
                                                         expense.currency,

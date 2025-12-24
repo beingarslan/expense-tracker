@@ -2,7 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
-import { PlusCircle, Search, Trash2, Edit } from 'lucide-react';
+import { Edit, PlusCircle, Search, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -66,7 +66,9 @@ export default function ExpensesIndex({
         filters.category_id || '',
     );
     const [typeFilter, setTypeFilter] = useState(filters.type || '');
-    const [priorityFilter, setPriorityFilter] = useState(filters.priority || '');
+    const [priorityFilter, setPriorityFilter] = useState(
+        filters.priority || '',
+    );
 
     const handleFilter = () => {
         router.get(
@@ -126,7 +128,7 @@ export default function ExpensesIndex({
                             </label>
                             <div className="relative">
                                 <Search
-                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"
+                                    className="absolute top-1/2 left-3 -translate-y-1/2 text-neutral-400"
                                     size={18}
                                 />
                                 <input
@@ -134,7 +136,7 @@ export default function ExpensesIndex({
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     placeholder="Search expenses..."
-                                    className="w-full rounded-lg border border-neutral-300 py-2 pl-10 pr-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 py-2 pr-3 pl-10 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                             </div>
                         </div>
@@ -148,7 +150,7 @@ export default function ExpensesIndex({
                                 onChange={(e) =>
                                     setCategoryFilter(e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="">All Categories</option>
                                 {categories.map((cat) => (
@@ -166,7 +168,7 @@ export default function ExpensesIndex({
                             <select
                                 value={typeFilter}
                                 onChange={(e) => setTypeFilter(e.target.value)}
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="">All Types</option>
                                 <option value="expense">Expense</option>
@@ -183,7 +185,7 @@ export default function ExpensesIndex({
                                 onChange={(e) =>
                                     setPriorityFilter(e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="">All Priorities</option>
                                 <option value="high">High</option>
