@@ -31,6 +31,11 @@ class FinancialGoal extends Model
         'priority' => 'string',
     ];
 
+    protected $appends = [
+        'progress_percentage',
+        'remaining_amount',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

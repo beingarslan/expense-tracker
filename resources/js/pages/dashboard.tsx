@@ -222,7 +222,7 @@ export default function Dashboard({
                                             </span>
                                         </div>
                                         <span className="font-semibold">
-                                            {formatCurrency(item.total)}
+                                            {formatCurrency(item.total, userCurrency)}
                                         </span>
                                     </div>
                                 ))
@@ -433,7 +433,7 @@ export default function Dashboard({
                                 />
                                 <YAxis tick={{ fontSize: 12 }} />
                                 <Tooltip 
-                                    formatter={(value: number) => formatCurrency(value)}
+                                    formatter={(value: number) => formatCurrency(value, userCurrency)}
                                 />
                                 <Legend />
                                 <Bar 
@@ -524,7 +524,7 @@ export default function Dashboard({
                                         ))}
                                     </Pie>
                                     <Tooltip 
-                                        formatter={(value: number) => formatCurrency(value)}
+                                        formatter={(value: number) => formatCurrency(value, userCurrency)}
                                     />
                                     <Legend />
                                 </PieChart>
