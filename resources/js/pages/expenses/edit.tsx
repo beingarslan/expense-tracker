@@ -41,13 +41,14 @@ interface Expense {
 interface EditExpenseProps {
     expense: Expense;
     categories: Category[];
+    userCurrency: string;
 }
 
-export default function EditExpense({ expense, categories }: EditExpenseProps) {
+export default function EditExpense({ expense, categories, userCurrency }: EditExpenseProps) {
     const { data, setData, put, processing, errors } = useForm({
         title: expense.title,
         amount: expense.amount.toString(),
-        currency: expense.currency || 'USD',
+        currency: expense.currency || userCurrency || 'USD',
         type: expense.type,
         category_id: expense.category_id?.toString() || '',
         date: expense.date,

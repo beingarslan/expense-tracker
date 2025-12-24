@@ -77,6 +77,7 @@ class ExpenseController extends Controller
 
         return Inertia::render('expenses/create', [
             'categories' => $categories,
+            'userCurrency' => auth()->user()->preferred_currency ?? 'USD',
         ]);
     }
 
@@ -107,7 +108,7 @@ class ExpenseController extends Controller
 
         $validated['user_id'] = auth()->id();
         if (!isset($validated['currency'])) {
-            $validated['currency'] = 'USD';
+            $validated['currency'] = auth()->user()->preferred_currency ?? 'USD';
         }
 
         Expense::create($validated);
@@ -145,6 +146,7 @@ class ExpenseController extends Controller
         return Inertia::render('expenses/edit', [
             'expense' => $expense,
             'categories' => $categories,
+            'userCurrency' => auth()->user()->preferred_currency ?? 'USD',
         ]);
     }
 

@@ -27,13 +27,14 @@ interface Category {
 
 interface CreateExpenseProps {
     categories: Category[];
+    userCurrency: string;
 }
 
-export default function CreateExpense({ categories }: CreateExpenseProps) {
+export default function CreateExpense({ categories, userCurrency }: CreateExpenseProps) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         amount: '',
-        currency: 'USD',
+        currency: userCurrency || 'USD',
         type: 'expense',
         category_id: '',
         date: new Date().toISOString().split('T')[0],

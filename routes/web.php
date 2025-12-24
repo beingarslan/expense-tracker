@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FinancialGoalController;
 use App\Http\Controllers\RecurringPaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,6 +26,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Recurring payment routes
     Route::resource('recurring-payments', RecurringPaymentController::class)->except(['create', 'show', 'edit']);
+
+    // Financial goal routes
+    Route::resource('financial-goals', FinancialGoalController::class)->except(['create', 'show', 'edit']);
 });
 
 require __DIR__.'/settings.php';
