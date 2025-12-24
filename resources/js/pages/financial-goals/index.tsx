@@ -2,7 +2,7 @@ import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import { PlusCircle, Trash2, Edit, Target } from 'lucide-react';
+import { Edit, PlusCircle, Target, Trash2 } from 'lucide-react';
 import { FormEvent, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -56,7 +56,9 @@ export default function FinancialGoalsIndex({
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [editingGoal, setEditingGoal] = useState<FinancialGoal | null>(null);
     const [statusFilter, setStatusFilter] = useState(filters.status || '');
-    const [priorityFilter, setPriorityFilter] = useState(filters.priority || '');
+    const [priorityFilter, setPriorityFilter] = useState(
+        filters.priority || '',
+    );
 
     const { data, setData, post, put, processing, errors, reset } = useForm({
         title: '',
@@ -103,14 +105,14 @@ export default function FinancialGoalsIndex({
 
     const handleEdit = (goal: FinancialGoal) => {
         setEditingGoal(goal);
-        
+
         // Format target_date to YYYY-MM-DD for the date input
         let formattedDate = '';
         if (goal.target_date) {
             const dateObj = new Date(goal.target_date);
             formattedDate = dateObj.toISOString().split('T')[0];
         }
-        
+
         setData({
             title: goal.title,
             description: goal.description || '',
@@ -192,8 +194,10 @@ export default function FinancialGoalsIndex({
                             </label>
                             <select
                                 value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                onChange={(e) =>
+                                    setStatusFilter(e.target.value)
+                                }
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="">All Status</option>
                                 <option value="active">Active</option>
@@ -211,7 +215,7 @@ export default function FinancialGoalsIndex({
                                 onChange={(e) =>
                                     setPriorityFilter(e.target.value)
                                 }
-                                className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                             >
                                 <option value="">All Priorities</option>
                                 <option value="high">High</option>
@@ -239,13 +243,13 @@ export default function FinancialGoalsIndex({
                                 key={goal.id}
                                 className="rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-neutral-900"
                             >
-                                <div className="flex items-start justify-between mb-4">
+                                <div className="mb-4 flex items-start justify-between">
                                     <div className="flex items-center gap-2">
                                         <Target
                                             className="text-blue-600"
                                             size={24}
                                         />
-                                        <h3 className="font-semibold text-lg">
+                                        <h3 className="text-lg font-semibold">
                                             {goal.title}
                                         </h3>
                                     </div>
@@ -257,7 +261,9 @@ export default function FinancialGoalsIndex({
                                             <Edit size={16} />
                                         </button>
                                         <button
-                                            onClick={() => handleDelete(goal.id)}
+                                            onClick={() =>
+                                                handleDelete(goal.id)
+                                            }
                                             className="rounded p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                                         >
                                             <Trash2 size={16} />
@@ -266,14 +272,14 @@ export default function FinancialGoalsIndex({
                                 </div>
 
                                 {goal.description && (
-                                    <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+                                    <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">
                                         {goal.description}
                                     </p>
                                 )}
 
                                 <div className="space-y-3">
                                     <div>
-                                        <div className="flex justify-between text-sm mb-1">
+                                        <div className="mb-1 flex justify-between text-sm">
                                             <span className="text-neutral-600 dark:text-neutral-400">
                                                 Progress
                                             </span>
@@ -284,9 +290,9 @@ export default function FinancialGoalsIndex({
                                                 %
                                             </span>
                                         </div>
-                                        <div className="h-2 bg-neutral-200 rounded-full dark:bg-neutral-700">
+                                        <div className="h-2 rounded-full bg-neutral-200 dark:bg-neutral-700">
                                             <div
-                                                className="h-full bg-blue-600 rounded-full"
+                                                className="h-full rounded-full bg-blue-600"
                                                 style={{
                                                     width: `${Math.min(goal.progress_percentage, 100)}%`,
                                                 }}
@@ -409,7 +415,7 @@ export default function FinancialGoalsIndex({
                                     onChange={(e) =>
                                         setData('title', e.target.value)
                                     }
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     required
                                 />
                                 {errors.title && (
@@ -429,7 +435,7 @@ export default function FinancialGoalsIndex({
                                         setData('description', e.target.value)
                                     }
                                     rows={3}
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                                 {errors.description && (
                                     <p className="mt-1 text-sm text-red-600">
@@ -453,7 +459,7 @@ export default function FinancialGoalsIndex({
                                                 e.target.value,
                                             )
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                         required
                                     />
                                     {errors.target_amount && (
@@ -477,7 +483,7 @@ export default function FinancialGoalsIndex({
                                                 e.target.value,
                                             )
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     />
                                     {errors.current_amount && (
                                         <p className="mt-1 text-sm text-red-600">
@@ -496,9 +502,12 @@ export default function FinancialGoalsIndex({
                                         type="date"
                                         value={data.target_date}
                                         onChange={(e) =>
-                                            setData('target_date', e.target.value)
+                                            setData(
+                                                'target_date',
+                                                e.target.value,
+                                            )
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                         required
                                     />
                                     {errors.target_date && (
@@ -517,7 +526,7 @@ export default function FinancialGoalsIndex({
                                         onChange={(e) =>
                                             setData('priority', e.target.value)
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     >
                                         <option value="low">Low</option>
                                         <option value="medium">Medium</option>
@@ -541,7 +550,7 @@ export default function FinancialGoalsIndex({
                                         onChange={(e) =>
                                             setData('status', e.target.value)
                                         }
-                                        className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                        className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                     >
                                         <option value="active">Active</option>
                                         <option value="completed">
@@ -569,7 +578,7 @@ export default function FinancialGoalsIndex({
                                         setData('notes', e.target.value)
                                     }
                                     rows={4}
-                                    className="w-full rounded-lg border border-neutral-300 py-2 px-3 dark:border-neutral-700 dark:bg-neutral-800"
+                                    className="w-full rounded-lg border border-neutral-300 px-3 py-2 dark:border-neutral-700 dark:bg-neutral-800"
                                 />
                                 {errors.notes && (
                                     <p className="mt-1 text-sm text-red-600">
