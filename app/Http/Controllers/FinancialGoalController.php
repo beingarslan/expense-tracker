@@ -44,7 +44,7 @@ class FinancialGoalController extends Controller
             'description' => 'nullable|string',
             'target_amount' => 'required|numeric|min:0',
             'current_amount' => 'nullable|numeric|min:0',
-            'target_date' => 'required|date|after:today',
+            'target_date' => 'required|date|after_or_equal:today',
             'priority' => 'required|in:low,medium,high',
             'notes' => 'nullable|string',
         ]);
@@ -72,7 +72,7 @@ class FinancialGoalController extends Controller
             'description' => 'nullable|string',
             'target_amount' => 'required|numeric|min:0',
             'current_amount' => 'nullable|numeric|min:0',
-            'target_date' => 'required|date',
+            'target_date' => 'required|date|after_or_equal:today',
             'status' => 'required|in:active,completed,cancelled',
             'priority' => 'required|in:low,medium,high',
             'notes' => 'nullable|string',

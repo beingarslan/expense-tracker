@@ -49,7 +49,7 @@ class FinancialGoal extends Model
         if ($this->target_amount <= 0) {
             return 0;
         }
-        
+
         return min(100, ($this->current_amount / $this->target_amount) * 100);
     }
 
